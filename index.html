@@ -2,87 +2,248 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XOS - Welcome</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SECURE PORTAL · CLOSE CIRCLE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #050505;
+            background-color: #030303;
             color: white;
+            touch-action: manipulation;
             overflow: hidden;
+            height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .font-brand {
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 4px;
+        .font-brand { font-family: 'Orbitron', sans-serif; }
+        .font-mono { font-family: 'Fira Code', monospace; }
+
+        .portal-container {
+            background: linear-gradient(145deg, rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.98));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            width: 90%;
+            max-width: 420px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 60px -10px black;
+            backdrop-filter: blur(4px);
         }
 
-        /* Subtle animated background blob */
-        .blob {
+        .glitch-text-small {
+            position: relative;
+            color: #3b82f6;
+            display: inline-block;
+        }
+        .glitch-text-small::after {
+            content: 'PORTAL';
             position: absolute;
-            filter: blur(80px);
-            z-index: 0;
-            opacity: 0.4;
-            animation: float 10s infinite ease-in-out;
+            left: 2px;
+            text-shadow: -1px 0 #ff3b6f;
+            top: 0;
+            background: #030303;
+            overflow: hidden;
+            clip: rect(0, 900px, 0, 0);
+            animation: glitch 2.8s infinite linear alternate-reverse;
+            width: 100%;
+            opacity: 0.8;
         }
-        
-        @keyframes float {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
+        @keyframes glitch {
+            0% { clip: rect(12px, 9999px, 18px, 0); }
+            25% { clip: rect(30px, 9999px, 8px, 0); }
+            50% { clip: rect(6px, 9999px, 35px, 0); }
+            75% { clip: rect(45px, 9999px, 22px, 0); }
+            100% { clip: rect(20px, 9999px, 40px, 0); }
         }
 
-        /* Glassmorphism Card */
-        .glass-card {
+        .glass-btn {
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.05);
+            padding: 4px 12px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        .glass-btn.hover-active:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.15), 0 0 15px rgba(59, 130, 246, 0.2);
+            transform: scale(1.02);
+            cursor: pointer;
         }
 
-        /* Button Glow */
-        .glow-btn:hover {
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            transform: translateY(-2px);
+        .code-symbol {
+            color: #3b82f6;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .vibe-input {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            border-radius: 60px;
+            padding: 14px 22px;
+            width: 100%;
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            color: white;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .vibe-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        }
+
+        .secret-link-reveal {
+            background: rgba(59, 130, 246, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            padding: 16px 24px;
+            border-radius: 60px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(59,130,246,0.3);
+            display: block;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+        }
+        .secret-link-reveal:hover {
+            background: rgba(59, 130, 246, 0.25);
+            border-color: #3b82f6;
+            box-shadow: 0 0 45px #3b82f6;
+            transform: scale(1.02);
+        }
+
+        .led-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 10px #ef4444;
+        }
+        .led-status.green {
+            background: #10b981;
+            box-shadow: 0 0 12px #10b981;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #3b82f6;
+            box-shadow: 0 0 18px #3b82f6;
+            transition: width 0.2s ease;
         }
     </style>
 </head>
-<body class="h-screen w-full flex flex-col items-center justify-center relative">
+<body>
+<div class="portal-container">
+    <div class="p-6 border-b border-white/5 bg-white/[0.02]">
+        <div class="flex items-center justify-between mb-4">
+            <div id="statusLed" class="led-status"></div>
+            <div class="text-[9px] font-mono text-gray-500 uppercase tracking-widest">only for few</div>
+        </div>
 
-    <div class="blob w-96 h-96 bg-blue-900 rounded-full top-[-10%] left-[-10%]"></div>
-    <div class="blob w-80 h-80 bg-purple-900 rounded-full bottom-[-10%] right-[-10%] animation-delay-2000"></div>
+        <h1 class="font-brand text-3xl font-bold tracking-tighter mb-1 flex items-center gap-2">
+            <span class="glitch-text-small">SECURE</span> <span style="color: white;">PORTAL</span>
+        </h1>
+    </div>
 
-    <div class="z-10 flex flex-col items-center text-center w-full max-w-sm px-6">
-        
-        <div class="mb-12 relative group cursor-default">
-            <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-            
-            <div class="relative w-28 h-28 rounded-full bg-black border border-gray-800 flex items-center justify-center shadow-2xl">
-                <span class="font-brand text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-white to-gray-500">X</span>
+    <div class="p-8 bg-black/40">
+        <div class="space-y-3">
+            <div class="flex justify-between font-mono text-[9px] text-gray-500 uppercase">
+                <span>VERIFICATION</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="relative w-full h-12 mb-5">
+                <input type="password" id="passwordInput" placeholder="enter password" class="vibe-input absolute inset-0 z-10" autocomplete="off">
+                <div class="absolute bottom-0 left-0 h-0.5 bg-white/5 w-full rounded-full overflow-hidden">
+                    <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
+                </div>
             </div>
         </div>
 
-        <h1 class="font-brand text-4xl mb-3 text-white">XOS</h1>
-        <p class="text-gray-400 text-xs tracking-[0.4em] uppercase mb-16 opacity-70">Social Interface v1.0</p>
-        
-        <a href="secondpage.html" 
-           class="glass-card w-full py-4 rounded-xl text-white font-medium tracking-widest uppercase text-sm transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:scale-[1.02]">
-            Enter System
-        </a>
+        <div id="messageArea" class="font-mono text-[10px] min-h-[32px] mb-6 flex items-center">
+            <span id="messageText" class="text-gray-400">⌨  access locked</span>
+        </div>
 
-        <a href="https://nikhil007-eng.github.io/xos-social-Id/" target="_blank"
-           class="mt-8 text-gray-600 text-[10px] uppercase tracking-[0.3em] transition-all duration-300 hover:text-white hover:tracking-[0.4em]">
-            Developer
-        </a>
+        <div id="linkRevealContainer" style="display: none;" class="flex flex-col items-center gap-4 mb-2">
+            <a href="index(6)(23)" id="secretLink" class="secret-link-reveal w-full">ENTER</a>
+            <span class="text-[8px] font-mono text-blue-500/40 tracking-[0.2em]">[ link active ]</span>
+        </div>
 
+        <div class="mt-8 flex items-center justify-between gap-2">
+            <button id="unlockBtn" class="glass-btn hover-active py-3 px-6 text-sm font-mono tracking-widest text-gray-300 uppercase">
+                <span class="code-symbol text-xs">🔒</span> authenticate
+            </button>
+            <span id="resetBtn" class="text-[9px] font-mono text-gray-600 border border-white/5 py-2 px-4 rounded-full cursor-pointer hover:text-gray-300 transition-colors tracking-wider">↻ reset</span>
+        </div>
     </div>
+</div>
 
+<script>
+    (function() {
+        // --- SETTINGS ---
+        const CORRECT_PASSWORD = "nyna"; 
+        const TARGET_LINK = "index(6)(24).html"; // <--- CHANGE YOUR SECOND PAGE NAME HERE
+
+        const passwordField = document.getElementById('passwordInput');
+        const unlockButton = document.getElementById('unlockBtn');
+        const resetButton = document.getElementById('resetBtn');
+        const msgSpan = document.getElementById('messageText');
+        const progressFill = document.getElementById('progressFill');
+        const progressPercent = document.getElementById('progressPercent');
+        const linkContainer = document.getElementById('linkRevealContainer');
+        const secretLink = document.getElementById('secretLink');
+        const led = document.getElementById('statusLed');
+
+        function updateProgress() {
+            const len = passwordField.value.length;
+            let percent = Math.min(100, (len / 8) * 100);
+            progressFill.style.width = percent + '%';
+            progressPercent.innerText = Math.floor(percent) + '%';
+        }
+
+        function attemptUnlock() {
+            if (passwordField.value.toLowerCase().trim() === CORRECT_PASSWORD) {
+                secretLink.href = TARGET_LINK;
+                linkContainer.style.display = 'flex';
+                msgSpan.innerText = '✔  access granted';
+                msgSpan.className = 'text-emerald-400';
+                led.className = 'led-status green';
+                progressFill.style.width = '100%';
+                progressPercent.innerText = '100%';
+            } else {
+                msgSpan.innerText = '✘  invalid password';
+                msgSpan.className = 'text-red-400';
+                led.className = 'led-status';
+            }
+        }
+
+        passwordField.addEventListener('input', updateProgress);
+        unlockButton.addEventListener('click', attemptUnlock);
+        passwordField.addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptUnlock(); });
+        resetButton.addEventListener('click', () => {
+            passwordField.value = '';
+            linkContainer.style.display = 'none';
+            msgSpan.innerText = '⌨  access locked';
+            msgSpan.className = 'text-gray-400';
+            led.className = 'led-status';
+            updateProgress();
+        });
+    })();
+</script>
 </body>
 </html>
