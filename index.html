@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SECURE PORTAL</title>
+    <title>XOS INT | Secure Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #030303;
@@ -14,118 +14,163 @@
             overflow: hidden;
             height: 100dvh;
             font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Logic for switching screens */
+        /* Screen Switching Logic */
         #login-screen {
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
             height: 100%;
-            transition: opacity 0.6s ease, filter 0.6s ease;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #second-page {
-            display: none; /* Hidden by default */
-            height: 100%;
-            width: 100%;
-            overflow-y: auto;
+            display: none;
             opacity: 0;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
             transition: opacity 0.8s ease;
         }
 
-        /* Portal UI Styles */
-        .portal-card {
-            background: linear-gradient(145deg, #0f0f0f, #050505);
+        .fade-out { opacity: 0; filter: blur(20px); transform: scale(0.9); pointer-events: none; }
+        .fade-in { display: flex !important; opacity: 1 !important; }
+
+        /* UI Components */
+        .portal-card, .board-container {
+            background: linear-gradient(145deg, rgba(15, 15, 15, 0.9), rgba(5, 5, 5, 0.9));
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
-            padding: 2rem;
             width: 90%;
             max-width: 400px;
-            text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
         }
+
+        .font-brand { font-family: 'Orbitron', sans-serif; }
+        .font-mono { font-family: 'Fira Code', monospace; }
 
         .vibe-input {
             background: rgba(0,0,0,0.5);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 50px;
-            padding: 12px 20px;
+            padding: 14px 20px;
             width: 100%;
             color: white;
             font-family: 'Fira Code', monospace;
             text-align: center;
             outline: none;
             margin: 20px 0;
+            transition: border-color 0.3s;
         }
-
         .vibe-input:focus { border-color: #3b82f6; }
 
         .btn-auth {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border-radius: 50px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 2px;
             transition: 0.3s;
         }
+        .btn-auth:hover { background: #3b82f6; border-color: #3b82f6; }
 
-        .btn-auth:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
+        /* Glitch Effect */
+        .glitch-text { position: relative; color: #3b82f6; }
+        .glitch-text::after {
+            content: 'INT';
+            position: absolute;
+            left: 2px;
+            text-shadow: -1px 0 red;
+            top: 0;
+            background: transparent;
+            overflow: hidden;
+            clip: rect(0, 900px, 0, 0);
+            animation: glitch 2s infinite linear alternate-reverse;
+            width: 100%;
+        }
+        @keyframes glitch {
+            0% { clip: rect(10px, 9999px, 5px, 0); }
+            100% { clip: rect(30px, 9999px, 40px, 0); }
+        }
 
-        /* Animation for Access Granted */
-        .fade-out { opacity: 0; filter: blur(10px); pointer-events: none; }
-        .fade-in { display: block !important; opacity: 1 !important; }
+        /* Loading Bar */
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #3b82f6;
+            box-shadow: 0 0 15px #3b82f6;
+            transition: width 0.4s ease;
+        }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="portal-card">
-            <h1 style="font-family: 'Orbitron';" class="text-2xl font-bold tracking-widest text-blue-500 mb-2">SECURE PORTAL</h1>
-            <p class="text-[10px] text-gray-500 font-mono tracking-widest uppercase mb-6">Encrypted Connection</p>
+        <div class="portal-card p-8 text-center">
+            <h1 class="font-brand text-2xl font-bold tracking-widest text-blue-500 mb-2">SECURE PORTAL</h1>
+            <p class="text-[9px] text-gray-500 font-mono tracking-widest uppercase mb-6">Encrypted Connection</p>
             
-            <input type="password" id="passInput" placeholder="ENTER KEY" class="vibe-input">
+            <input type="password" id="passInput" placeholder="ENTER KEY" class="vibe-input" autocomplete="off">
             
             <div id="msg" class="text-[10px] font-mono text-gray-600 mb-6 uppercase">Waiting for input...</div>
             
-            <button onclick="checkPassword()" class="btn-auth">AUTHENTICATE</button>
+            <button onclick="checkPassword()" class="btn-auth uppercase">Authenticate</button>
         </div>
     </div>
 
     <div id="second-page">
-        <div class="flex flex-col items-center justify-center min-h-screen p-10">
-            
-            <div class="max-w-2xl w-full bg-white/5 border border-white/10 p-8 rounded-3xl">
-                <h2 style="font-family: 'Orbitron';" class="text-3xl text-emerald-400 mb-4">ACCESS GRANTED</h2>
-                <hr class="border-white/10 mb-6">
+        <div class="board-container">
+            <div class="p-8 border-b border-white/5 bg-white/[0.02]">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]"></div>
+                    <div class="text-[9px] font-mono text-gray-500 uppercase tracking-widest">Protocol: Verified</div>
+                </div>
                 
-                <p class="font-mono text-sm text-gray-300 leading-relaxed mb-4">
-                    > This is your second page content.
+                <h1 class="font-brand text-3xl font-bold tracking-tighter mb-1">
+                    XOS <span class="glitch-text">INT</span>
+                </h1>
+                <p class="text-blue-500/80 text-[10px] font-mono uppercase tracking-widest">
+                    Personalised Social Interface
                 </p>
-                <p class="font-mono text-sm text-gray-400 mb-6">
-                    You can add your images, text, and GitHub links directly here inside the "second-page" div. 
-                    Since this is one file, it loads instantly.
-                </p>
+            </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-black/40 p-4 rounded-xl border border-white/5">
-                        <span class="text-blue-500 text-[10px] font-mono">STATUS</span>
-                        <p class="text-xs">Secure Session Active</p>
+            <div class="p-8 bg-black/40">
+                <h2 class="font-brand text-xl mb-4 tracking-[0.2em] text-gray-300">COMING SOON</h2>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between font-mono text-[9px] text-gray-500 uppercase">
+                        <span>Deploying Modules</span>
+                        <span id="percentText">0%</span>
                     </div>
-                    <div class="bg-black/40 p-4 rounded-xl border border-white/5">
-                        <span class="text-blue-500 text-[10px] font-mono">FILES</span>
-                        <p class="text-xs">12 Units Decrypted</p>
+                    <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                        <div id="loadingBar" class="progress-bar"></div>
                     </div>
                 </div>
 
-                <button onclick="location.reload()" class="mt-8 text-[10px] text-gray-600 hover:text-white font-mono uppercase tracking-[3px]">
-                    [ Terminate Connection ]
+                <div class="mt-8 pt-6 border-t border-white/5">
+                    <p class="text-[11px] text-gray-500 leading-relaxed italic">
+                        "Tailoring the digital experience to the core user."
+                    </p>
+                </div>
+
+                <button onclick="location.reload()" class="mt-6 font-mono text-[8px] uppercase tracking-[0.2em] text-gray-600 hover:text-white transition-colors">
+                    [ terminate_session ]
                 </button>
             </div>
-            </div>
+
+            <div class="absolute bottom-0 right-0 w-12 h-12 bg-blue-600/10 [clip-path:polygon(100%_0,100%_100%,0_100%)]"></div>
+        </div>
     </div>
 
     <script>
@@ -135,20 +180,18 @@
             const login = document.getElementById('login-screen');
             const second = document.getElementById('second-page');
 
-            // Set your password here
             if (input === "nyna") {
                 msg.innerText = "Access Granted";
                 msg.style.color = "#10b981";
                 
-                // Trigger the transition
                 setTimeout(() => {
                     login.classList.add('fade-out');
                     setTimeout(() => {
                         login.style.display = 'none';
                         second.classList.add('fade-in');
+                        startLoading(); // Start the XOS loading animation
                     }, 600);
                 }, 500);
-
             } else {
                 msg.innerText = "Invalid Credential";
                 msg.style.color = "#ef4444";
@@ -156,8 +199,24 @@
             }
         }
 
-        // Allow "Enter" key to submit
-        document.getElementById('passInput').addEventListener('keypress', function (e) {
+        function startLoading() {
+            let progress = 0;
+            const bar = document.getElementById('loadingBar');
+            const text = document.getElementById('percentText');
+
+            function simulate() {
+                if (progress < 88) {
+                    progress += Math.random() * 1.5;
+                    if (progress > 88) progress = 88;
+                    bar.style.width = progress + '%';
+                    text.innerText = Math.floor(progress) + '%';
+                    setTimeout(simulate, 40);
+                }
+            }
+            simulate();
+        }
+
+        document.getElementById('passInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') checkPassword();
         });
     </script>
