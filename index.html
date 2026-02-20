@@ -116,6 +116,10 @@
 </head>
 <body>
 
+    <audio id="authSuccessAudio">
+        <source src="shubh_tts_audio.mp3" type="audio/mpeg">
+    </audio>
+
     <div id="login-screen">
         <div class="portal-card p-8 text-center">
             <h1 class="font-brand text-2xl font-bold tracking-widest text-blue-500 mb-2">SECURE PORTAL</h1>
@@ -179,10 +183,16 @@
             const msg = document.getElementById('msg');
             const login = document.getElementById('login-screen');
             const second = document.getElementById('second-page');
+            const audio = document.getElementById('authSuccessAudio');
 
             if (input === "nyna") {
                 msg.innerText = "Access Granted";
                 msg.style.color = "#10b981";
+
+                // --- NEW AUDIO LOGIC ---
+                // We play the audio immediately upon clicking 'Authenticate'
+                audio.play().catch(e => console.error("Audio playback failed:", e));
+                // -----------------------
                 
                 setTimeout(() => {
                     login.classList.add('fade-out');
