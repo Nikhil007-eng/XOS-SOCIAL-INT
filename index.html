@@ -89,7 +89,6 @@
         }
         .btn-auth:hover { background: #3b82f6; border-color: #3b82f6; }
 
-        /* Glitch Effect */
         .glitch-text { position: relative; color: #3b82f6; }
         .glitch-text::after {
             content: 'INT';
@@ -108,7 +107,6 @@
             100% { clip: rect(30px, 9999px, 40px, 0); }
         }
 
-        /* Loading Bar */
         .progress-bar {
             width: 0%;
             height: 100%;
@@ -121,8 +119,9 @@
 <body>
 
     <audio id="xosAudio" preload="auto">
-    <source src="shubh_tts_audio (1).mp3" type="audio/mpeg">
-</audio>
+        <source src="https://raw.githubusercontent.com/Nikhil007-eng/XOS-SOCIAL-INT/main/shubh_tts_audio%20(1).mp3" type="audio/mpeg">
+    </audio>
+
     <div id="login-screen">
         <div class="portal-card p-8 text-center">
             <h1 class="font-brand text-2xl font-bold tracking-widest text-blue-500 mb-2">SECURE PORTAL</h1>
@@ -192,12 +191,14 @@
                 msg.innerText = "Identity Confirmed";
                 msg.style.color = "#10b981";
 
-                // Play Audio Immediately on Button Click
-                audio.play().catch(error => {
-                    console.log("Audio failed to play. Check if file exists.", error);
-                });
+                // Play Audio after 1 second lag
+                setTimeout(() => {
+                    audio.play().catch(error => {
+                        console.log("Audio play failed. Check browser permissions or URL.", error);
+                    });
+                }, 1000);
                 
-                // Start UI Transition
+                // Transition UI shortly after audio starts
                 setTimeout(() => {
                     login.classList.add('fade-out');
                     setTimeout(() => {
@@ -205,7 +206,7 @@
                         second.classList.add('fade-in');
                         startLoading(); 
                     }, 600);
-                }, 500);
+                }, 1500);
             } else {
                 msg.innerText = "Access Denied";
                 msg.style.color = "#ef4444";
@@ -230,7 +231,6 @@
             simulate();
         }
 
-        // Allow 'Enter' key to trigger authentication
         document.getElementById('passInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') checkPassword();
         });
