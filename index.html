@@ -27,6 +27,8 @@
             width: 100%;
             height: 100%;
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            z-index: 10;
         }
 
         #second-page {
@@ -37,6 +39,7 @@
             align-items: center;
             justify-content: center;
             transition: opacity 0.8s ease;
+            position: absolute;
         }
 
         .fade-out { opacity: 0; filter: blur(20px); transform: scale(0.9); pointer-events: none; }
@@ -82,6 +85,7 @@
             font-size: 11px;
             letter-spacing: 2px;
             transition: 0.3s;
+            cursor: pointer;
         }
         .btn-auth:hover { background: #3b82f6; border-color: #3b82f6; }
 
@@ -110,24 +114,24 @@
             height: 100%;
             background: #3b82f6;
             box-shadow: 0 0 15px #3b82f6;
-            transition: width 0.4s ease;
+            transition: width 0.1s linear;
         }
     </style>
 </head>
 <body>
 
-    <audio id="authSuccessAudio">
+    <audio id="xosAudio" preload="auto">
         <source src="shubh_tts_audio.mp3" type="audio/mpeg">
     </audio>
 
     <div id="login-screen">
         <div class="portal-card p-8 text-center">
             <h1 class="font-brand text-2xl font-bold tracking-widest text-blue-500 mb-2">SECURE PORTAL</h1>
-            <p class="text-[9px] text-gray-500 font-mono tracking-widest uppercase mb-6">Encrypted Connection</p>
+            <p class="text-[9px] text-gray-500 font-mono tracking-widest uppercase mb-6">Waiting for authorization</p>
             
             <input type="password" id="passInput" placeholder="ENTER KEY" class="vibe-input" autocomplete="off">
             
-            <div id="msg" class="text-[10px] font-mono text-gray-600 mb-6 uppercase">Waiting for input...</div>
+            <div id="msg" class="text-[10px] font-mono text-gray-600 mb-6 uppercase">System Locked</div>
             
             <button onclick="checkPassword()" class="btn-auth uppercase">Authenticate</button>
         </div>
@@ -183,27 +187,28 @@
             const msg = document.getElementById('msg');
             const login = document.getElementById('login-screen');
             const second = document.getElementById('second-page');
-            const audio = document.getElementById('authSuccessAudio');
+            const audio = document.getElementById('xosAudio');
 
             if (input === "nyna") {
-                msg.innerText = "Access Granted";
+                msg.innerText = "Identity Confirmed";
                 msg.style.color = "#10b981";
 
-                // --- NEW AUDIO LOGIC ---
-                // We play the audio immediately upon clicking 'Authenticate'
-                audio.play().catch(e => console.error("Audio playback failed:", e));
-                // -----------------------
+                // Play Audio Immediately on Button Click
+                audio.play().catch(error => {
+                    console.log("Audio failed to play. Check if file exists.", error);
+                });
                 
+                // Start UI Transition
                 setTimeout(() => {
                     login.classList.add('fade-out');
                     setTimeout(() => {
                         login.style.display = 'none';
                         second.classList.add('fade-in');
-                        startLoading(); // Start the XOS loading animation
+                        startLoading(); 
                     }, 600);
                 }, 500);
             } else {
-                msg.innerText = "Invalid Credential";
+                msg.innerText = "Access Denied";
                 msg.style.color = "#ef4444";
                 document.getElementById('passInput').value = "";
             }
@@ -216,16 +221,17 @@
 
             function simulate() {
                 if (progress < 88) {
-                    progress += Math.random() * 1.5;
+                    progress += Math.random() * 0.8;
                     if (progress > 88) progress = 88;
                     bar.style.width = progress + '%';
                     text.innerText = Math.floor(progress) + '%';
-                    setTimeout(simulate, 40);
+                    requestAnimationFrame(simulate);
                 }
             }
             simulate();
         }
 
+        // Allow 'Enter' key to trigger authentication
         document.getElementById('passInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') checkPassword();
         });
